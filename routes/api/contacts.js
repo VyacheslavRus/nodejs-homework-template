@@ -1,15 +1,22 @@
 const express = require("express");
-const сontroller = require("../controller");
+const controller = require("./controller");
 const { controlValidation, controlValidationPath } = require("./vilidation");
 const router = express.Router();
 
-router.get("/", сontroller.listContactsCont);
+router.get("/", controller.listContactsCont);
 
-router.get("/:contactId", сontroller.getContactByIdCont);
+router.get("/:contactId", controller.getContactByIdCont);
 
-router.post("/", controlValidation, сontroller.postContact);
-router.delete("/:contactId", сontroller.deleteContact);
+router.post("/", controlValidation, controller.postContactCont);
 
-router.patch("/:contactId", controlValidationPath, сontroller.patchContact);
+router.delete("/:contactId", controller.deleteContactCont);
+
+router.patch("/:contactId", controlValidationPath, controller.patchContactCont);
+
+router.patch(
+  ":contactId/favorite",
+  controlValidationPath,
+  controller.patchFavoriteCont
+);
 
 module.exports = router;
