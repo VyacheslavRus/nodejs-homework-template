@@ -2,21 +2,26 @@ const express = require("express");
 const controller = require("./controller");
 const { controlValidation, controlValidationPath } = require("./vilidation");
 const router = express.Router();
+const { asyncWrapper } = require("../../helpers/async-wrapper");
 
-router.get("/", controller.listContactsCont);
+router.get("/", asyncWrapper(controller.listContactsCont));
 
-router.get("/:contactId", controller.getContactByIdCont);
+router.get("/:contactId", asyncWrapper(controller.getContactByIdCont));
 
-router.post("/", controlValidation, controller.postContactCont);
+router.post("/", controlValidation, asyncWrapper(controller.postContactCont));
 
-router.delete("/:contactId", controller.deleteContactCont);
+router.delete("/:contactId", asyncWrapper(controller.deleteContactCont));
 
-router.patch("/:contactId", controlValidationPath, controller.patchContactCont);
+router.patch(
+  "/:contactId",
+  controlValidationPath,
+  asyncWrapper(controller.patchContactCont)
+);
 
 router.patch(
   ":contactId/favorite",
   controlValidationPath,
-  controller.patchFavoriteCont
+  asyncWrapper(controller.patchFavoriteCont)
 );
 
 module.exports = router;

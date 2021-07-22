@@ -5,6 +5,8 @@ const contactsRouter = require("../routes/api/contacts");
 const path = require("path");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
+const { authController } = require("../auth/auth.controller");
+const { usersController } = require("../users/users.controller");
 
 // const MONGODB_URI =
 //   "mongodb+srv://rus_00777:DHKaC6mb7KnrPIQT@clusterrus.lb66e.mongodb.net/db-contacts?retryWrites=true&w=majority";
@@ -40,6 +42,8 @@ class Server {
 
   initRoutes() {
     this.server.use("/api/contacts", contactsRouter);
+    this.server.use("/auth", authController);
+    this.server.use("/users", usersController);
   }
 
   initConfig() {
@@ -65,6 +69,7 @@ class Server {
     this.server.use((err, req, res, next) => {
       const statusCode = err.status || 500;
       res.status(statusCode).send(err.message);
+      console.log(err);
     });
   }
 
