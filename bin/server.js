@@ -8,9 +8,6 @@ const dotenv = require("dotenv");
 const { authController } = require("../auth/auth.controller");
 const { usersController } = require("../users/users.controller");
 
-// const MONGODB_URI =
-//   "mongodb+srv://rus_00777:DHKaC6mb7KnrPIQT@clusterrus.lb66e.mongodb.net/db-contacts?retryWrites=true&w=majority";
-
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -38,6 +35,7 @@ class Server {
     this.server.use(express.json());
     this.server.use(cors({ origin: "*" }));
     this.server.use(logger("dev"));
+    this.server.use("/avatars", express.static("../public/avatars"));
   }
 
   initRoutes() {

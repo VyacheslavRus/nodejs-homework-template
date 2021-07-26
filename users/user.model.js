@@ -12,6 +12,7 @@ const userSchema = new Schema({
     default: "starter",
   },
   token: { type: String, default: null },
+  avatarURL: { type: String },
 });
 
 userSchema.statics.hashPassword = async (password) => {

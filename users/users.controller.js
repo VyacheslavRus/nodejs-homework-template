@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { authService } = require("../auth/auth.service");
+const { authService, compressImage, upload } = require("../auth/auth.service");
 const { asyncWrapper } = require("../helpers/async-wrapper");
 const { authorize } = require("../helpers/authorize");
 const { prepareUser } = require("./user.serializer");
@@ -17,6 +17,17 @@ router.post(
     await authService.logout(req.user);
     res.status(204).json("User is logged out");
   })
+);
+
+router.patch(
+  "/avatars",
+  authorize,
+  upload.single("avatar"),
+  compressImage,
+  async (req, res, next) => {
+    const userAva = await authService.updateAvatar(req);
+    return res.status(200).send(userAva);
+  }
 );
 
 exports.usersController = router;
