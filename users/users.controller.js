@@ -30,4 +30,23 @@ router.patch(
   }
 );
 
+router.get(
+  "/verify/:verificationToken",
+  asyncWrapper(async (req, res, next) => {
+    await authService.verifyEmail(req.params.verificationToken);
+    res.status(200).json("Verification successful");
+  })
+);
+
+router.post(
+  "/verify",
+  asyncWrapper(async (req, res, next) => {
+    const verify = await authService.reverifyEmail(req.body.email);
+    if (verify === true) {
+      return res.status(400).json("Verification has already been passed");
+    }
+    res.status(200).json({ message: "Verification letter sent" });
+  })
+);
+
 exports.usersController = router;
